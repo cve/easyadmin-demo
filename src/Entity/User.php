@@ -79,6 +79,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $roles = [];
 
+    /**
+     * @Assert\NotBlank()
+     * @ORM\ManyToOne(targetEntity=Foo::class, inversedBy="users")
+     */
+    private $foo;
+
     public function __toString()
     {
         return (string) $this->getFullName();
@@ -189,5 +195,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // add $this->salt too if you don't use Bcrypt or Argon2i
         [$this->id, $this->username, $this->password] = $data;
+    }
+
+    public function getFoo(): ?Foo
+    {
+        return $this->foo;
+    }
+
+    public function setFoo(?Foo $foo): self
+    {
+        $this->foo = $foo;
+
+        return $this;
     }
 }
